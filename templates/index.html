@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" id="html" class="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lexi – Summarizer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="icon" href="/static/Lexi.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-pink-100 via-yellow-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white transition-colors duration-300 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-pink-500 via-yellow-400 to-blue-500 dark:from-gray-700 dark:to-gray-900 text-white py-5 shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto flex items-center justify-between px-6">
+      <div class="flex items-center space-x-4">
+        <img src="/static/Lexi.png" alt="Lexi Logo" class="h-24 w-24 rounded-full shadow-xl border border-white" />
+        <h1 class="text-4xl font-bold tracking-wide drop-shadow-lg">Lexi</h1>
+  </header>
+
+  <!-- Main Section -->
+  <main class="container mx-auto p-6 mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <!-- Input Form -->
+    <form action="{{ url_for('Summarize') }}" method="post" class="bg-white dark:bg-gray-900 rounded-xl shadow-xl p-6 space-y-6 border border-gray-200 dark:border-gray-700">
+      <h2 class="text-xl font-semibold text-pink-700 dark:text-pink-300">📝 Enter Text to Summarize</h2>
+      <textarea
+        name="data"
+        id="data"
+        rows="10"
+        required
+        placeholder="Paste or type your content here..."
+        class="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-400 focus:outline-none resize-none bg-pink-50 dark:bg-gray-800"
+      ></textarea>
+
+      <div>
+        <label for="maxL" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+          Summary Length: <span id="lengthValue" class="font-semibold text-pink-600 dark:text-pink-400">100</span> words
+        </label>
+        <input
+          type="range"
+          min="20"
+          max="1000"
+          name="maxL"
+          value="100"
+          id="maxL"
+          class="w-full accent-pink-500"
+          oninput="document.getElementById('lengthValue').textContent = this.value"
+        />
+      </div>
+
+      <div class="flex space-x-4">
+        <button
+          type="submit"
+          class="bg-gradient-to-r from-pink-500 via-red-400 to-yellow-400 hover:from-pink-600 hover:to-yellow-500 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200 font-semibold"
+        >
+          ✨ Summarize
+        </button>
+        <button
+          type="reset"
+          class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-6 py-2 rounded-lg transition-all duration-200"
+        >
+          🔄 Clear
+        </button>
+      </div>
+    </form>
+
+    <!-- Output Summary -->
+    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-xl p-6 border border-gray-200 dark:border-gray-700 flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-2">📃 Summary Output</h2>
+        <textarea
+          id="summary"
+          rows="10"
+          readonly
+          placeholder="Your summary will appear here..."
+          class="w-full p-4 border border-blue-300 dark:border-blue-600 bg-blue-50 dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg resize-none"
+        >{{ result }}</textarea>
+      </div>
+
+      <button
+        onclick="copySummary()"
+        class="mt-4 self-end bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-all duration-200"
+      >
+        📋 Copy Summary
+      </button>
+    </div>
+  </main>
+
+  <!-- Copy to clipboard -->
+  <script>
+    function copySummary() {
+      const summary = document.getElementById("summary");
+      navigator.clipboard.writeText(summary.value)
+        .then(() => alert("📋 Summary copied to clipboard!"))
+        .catch(() => alert("⚠️ Failed to copy summary."));
+    }
+  </script>
+
+</body>
+</html>
