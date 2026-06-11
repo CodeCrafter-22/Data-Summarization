@@ -2,6 +2,10 @@
 
 A simple Flask-based web application that generates concise summaries from long text using the Hugging Face Inference API.
 
+## Live Demo
+
+https://summarizzer.onrender.com
+
 ## Features
 
 * Summarize large paragraphs of text
